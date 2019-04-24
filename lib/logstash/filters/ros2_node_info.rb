@@ -22,6 +22,11 @@ class LogStash::Filters::Ros2NodeInfo < LogStash::Filters::Base
     # Essentially a simple stack-based parser based on number of spaces at
     # the start of each line
     if @source
+      if event.get(@source).nil?
+        event.tag("_ros2_node_info_parse_failure")
+        @logger.debug? && @logger.debug("Event had no data in #{@source}")
+        return [event]
+      end
       last_cat = nil
       running_array = []
       event.get(@source).split("\n").each do |line|
