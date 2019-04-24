@@ -29,4 +29,25 @@ describe LogStash::Filters::Ros2NodeInfo do
                                                  "type"=>"rcl_interfaces/ParameterEvent"}])
     end
   end
+
+  describe "Parse nonexistent field" do
+    let(:config) do <<-CONFIG
+      filter {
+        ros2_node_info {
+          source => "wrongsource"
+        }
+      }
+    CONFIG
+    end
+
+    sample("message" => "/talker
+  Subscribers:
+    /parameter_events: rcl_interfaces/ParameterEvent
+  Publishers:
+    /chatter: std_msgs/String
+  Services:
+    /talker/set_parameters_atomically: rcl_interfaces/SetParametersAtomically") do
+      expect(subject.get("tags")).to include("_ros2_node_info_parse_failure")
+    end
+  end
 end
