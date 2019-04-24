@@ -49,7 +49,10 @@ class LogStash::Filters::Ros2NodeInfo < LogStash::Filters::Base
           running_array << { "topic" => split_line[0], "type" => split_line[1] }
 	end
       end
-      event.set(last_cat, running_array)
+      # If we have a running array and we're done parsing, dump it
+      unless last_cat.nil?
+        event.set(last_cat, running_array)
+      end
     end
       
     # filter_matched should go in the last line of our successful code
