@@ -1,0 +1,9 @@
+language: ruby
+cache: bundler
+rvm:
+  - jruby
+jdk:
+  - openjdk8
+  - oraclejdk8
+  - openjdk11
+  - oraclejdk11
