@@ -27,6 +27,7 @@ describe LogStash::Filters::Ros2NodeInfo do
                                                 "type"=>"std_msgs/String"}])
       expect(subject.get("subscribers")).to eq([{"topic"=>"/parameter_events",
                                                  "type"=>"rcl_interfaces/ParameterEvent"}])
+      expect(subject.get("tags")).to eq(nil)
     end
   end
 
@@ -48,6 +49,21 @@ describe LogStash::Filters::Ros2NodeInfo do
   Services:
     /talker/set_parameters_atomically: rcl_interfaces/SetParametersAtomically") do
       expect(subject.get("tags")).to include("_ros2_node_info_parse_failure")
+    end
+  end
+  describe "Parse when there are no categories" do
+    let(:config) do <<-CONFIG
+      filter {
+        ros2_node_info {
+          source => "message"
+        }
+      }
+    CONFIG
+    end
+
+    sample("message" => "/talker") do
+      expect(subject.get("node")).to eq("/talker")
+      expect(subject.get("tags")).to eq(nil)
     end
   end
 end
