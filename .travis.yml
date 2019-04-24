@@ -7,3 +7,27 @@ jdk:
   - oraclejdk8
   - openjdk11
   - oraclejdk11
+
+notifications:
+  email:
+    on_failure: never   
+
+# Prep steps for all matrix elements
+script:
+  - bundle install
+  - bundle exec rake vendor
+
+jobs:
+  include:
+    - stage: test
+      script: bundle exec rspec
+    - stage: deploy
+      if: branch = master
+      jdk: openjdk11
+      deploy:
+        provider: rubygems
+        gem: logstash-filter_ros2_node_info
+        api_key: $RUBYGEMS_API_KEY
+        on:
+          tags: true
+
