@@ -46,8 +46,6 @@ class LogStash::Filters::Ros2NodeInfo < LogStash::Filters::Base
           # Element of a category - split it appropriately and append it to the
           # working array
           split_line = line.tr(" ", "").split(":")
-	  @logger.error(line)
-	  @logger.error(split_line.to_yaml)
           running_array << { "topic" => split_line[0], "type" => split_line[1] }
 	end
       end
