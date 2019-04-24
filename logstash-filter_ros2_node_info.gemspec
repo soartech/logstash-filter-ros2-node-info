@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'logstash-filter-ros2_node_info'
-  s.version       = '0.1.1'
+  s.version       = '0.1.2'
   s.licenses      = ['Apache-2.0']
   s.summary       = 'A plugin to parse the output of `ros2 node info` into a useful format.'
   s.homepage      = 'https://github.com/soartech/logstash-filter-ros2_node_info'
